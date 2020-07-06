@@ -4,7 +4,10 @@
     "metadata": {
         "name": "iris-classifier",
         "namespace": "default",
-        "creationTimestamp": null
+        "creationTimestamp": null,
+        "labels": {
+            "app.kubernetes.io/instance": "seldon-gitops-default"
+        }
     },
     "spec": {
         "name": "iris-classifier",
@@ -28,7 +31,7 @@
                 "componentSpecs": [
                     {
                         "metadata": {
-                            "creationTimestamp": "2020-06-30T00:52:18Z"
+                            "creationTimestamp": "2020-07-06T18:20:41Z"
                         },
                         "spec": {
                             "containers": [
@@ -42,16 +45,7 @@
                                             "protocol": "TCP"
                                         }
                                     ],
-                                    "resources": {
-                                        "limits": {
-                                            "cpu": "1",
-                                            "memory": "1Gi"
-                                        },
-                                        "requests": {
-                                            "cpu": "1",
-                                            "memory": "1Gi"
-                                        }
-                                    },
+                                    "resources": {},
                                     "volumeMounts": [
                                         {
                                             "name": "podinfo",
@@ -64,48 +58,15 @@
                     }
                 ],
                 "replicas": 1,
+                "annotations": {
+                    "seldon.io/canary": "false"
+                },
                 "engineResources": {},
                 "labels": {
                     "version": "default"
                 },
                 "svcOrchSpec": {},
                 "traffic": 100
-            },
-            {
-                "name": "shadow",
-                "graph": {
-                    "name": "iris-classifier-container",
-                    "implementation": "SKLEARN_SERVER",
-                    "endpoint": {
-                        "type": "REST"
-                    },
-                    "modelUri": "gs://seldon-models/sklearn/iris",
-                    "logger": {
-                        "mode": "all"
-                    }
-                },
-                "componentSpecs": [
-                    {
-                        "metadata": {
-                            "creationTimestamp": "2020-07-06T18:20:41Z"
-                        },
-                        "spec": {
-                            "containers": [
-                                {
-                                    "name": "iris-classifier-container",
-                                    "resources": {}
-                                }
-                            ]
-                        }
-                    }
-                ],
-                "replicas": 1,
-                "annotations": {
-                    "seldon.io/canary": "false"
-                },
-                "engineResources": {},
-                "svcOrchSpec": {},
-                "shadow": true
             }
         ],
         "annotations": {
