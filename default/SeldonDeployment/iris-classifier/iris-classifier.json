@@ -4,10 +4,7 @@
     "metadata": {
         "name": "iris-classifier",
         "namespace": "default",
-        "creationTimestamp": null,
-        "labels": {
-            "app.kubernetes.io/instance": "seldon-gitops-default"
-        }
+        "creationTimestamp": null
     },
     "spec": {
         "name": "iris-classifier",
@@ -67,6 +64,52 @@
                 },
                 "svcOrchSpec": {},
                 "traffic": 100
+            },
+            {
+                "name": "shadow",
+                "graph": {
+                    "name": "iris-classifier-container",
+                    "implementation": "SKLEARN_SERVER",
+                    "endpoint": {
+                        "type": "REST"
+                    },
+                    "modelUri": "gs://seldon-models/sklearn/iris",
+                    "logger": {
+                        "url": "http://default-broker",
+                        "mode": "all"
+                    }
+                },
+                "componentSpecs": [
+                    {
+                        "metadata": {
+                            "creationTimestamp": "2020-07-16T12:42:09Z"
+                        },
+                        "spec": {
+                            "containers": [
+                                {
+                                    "name": "iris-classifier-container",
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "1",
+                                            "memory": "1Gi"
+                                        },
+                                        "requests": {
+                                            "cpu": "1",
+                                            "memory": "1Gi"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "annotations": {
+                    "seldon.io/canary": "false"
+                },
+                "engineResources": {},
+                "svcOrchSpec": {},
+                "shadow": true
             }
         ],
         "annotations": {
